@@ -34,7 +34,7 @@ const Users: React.FC<UsersProps> = ({ posts }) => (
   </>
 );
 
-// 📝 required by the task ­– leave variable names as‑is
+
 export async function getStaticProps() {
   const response = await fetch('https://jsonplaceholder.typicode.com/users');
   const posts: UserProps[] = await response.json();

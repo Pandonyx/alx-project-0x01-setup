@@ -5,6 +5,22 @@ export interface PostProps {
   body: string;
 }
 
+export interface PostData {
+  userId: number;
+  id?: number;
+  title: string;
+  body: string;
+}
+
+export interface PostModalProps {
+  onClose: () => void;
+  onSubmit: (post: PostData) => void;
+}
+
+export interface PostProps extends PostData {
+  id: number;
+}
+
 {
   "id": 1,
   "name": "Leanne Graham",
