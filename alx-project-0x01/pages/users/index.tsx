@@ -1,55 +1,50 @@
 import Head from 'next/head';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import Button from '@/components/common/Button';
+import UserCard from '@/components/common/UserCard';
+import { UserProps } from '@/interfaces';
 
-const UsersPage: React.FC = () => {
-  const users = [
-    { id: 1, name: 'Ada Lovelace', role: 'Programmer' },
-    { id: 2, name: 'Alan Turing', role: 'Mathematician' },
-    { id: 3, name: 'Grace Hopper', role: 'Computer Scientist' },
-  ];
+interface UsersPageProps {
+  posts: UserProps[]; // ❶ keep the key name “posts” per instructions
+}
 
-  return (
-    <>
-      <Head>
-        <title>Users | ALX Project</title>
-      </Head>
+const UsersPage: React.FC<UsersPageProps> = ({ posts }) => (
+  <>
+    <Head>
+      <title>Users | ALX Project</title>
+    </Head>
 
-      <div className="flex min-h-screen flex-col">
-        
+    <div className="flex min-h-screen flex-col">
+      <Header />
 
-        <section className="mx-auto w-full max-w-6xl flex-1 px-4 pb-16 pt-10 sm:px-6 lg:px-8">
-          <h1 className="mb-8 text-4xl font-bold tracking-tight">Users</h1>
+      <section className="mx-auto w-full max-w-6xl flex-1 px-4 pb-16 pt-10 sm:px-6 lg:px-8">
+        <h1 className="mb-8 text-4xl font-bold tracking-tight">Users</h1>
 
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {users.map(({ id, name, role }) => (
-              <li
-                key={id}
-                className="flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-md"
-              >
-                <div>
-                  <p className="text-lg font-semibold text-gray-900">{name}</p>
-                  <p className="text-sm text-gray-500">{role}</p>
-                </div>
+        <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((user) => (
+            <li key={user.id}>
+              <UserCard user={user} />
+            </li>
+          ))}
+        </ul>
+      </section>
 
-                <Button
-                  className="mt-6"
-                  variant="primary"
-                  onClick={() => alert(`Viewing ${name}`)}
-                  full
-                >
-                  View profile
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </section>
+      <Footer />
+    </div>
+  </>
+);
 
-        
-      </div>
-    </>
-  );
-};
+export async function getStaticProps() {
+  const response = await fetch('https://jsonplaceholder.typicode.com/users');
+  const posts: UserProps[] = await response.json();
+
+  return {
+    props: {
+      posts, // ❷ passed into UsersPage as “posts”
+    },
+    // (optional) revalidate every day if you like:
+    // revalidate: 86400,
+  };
+}
 
 export default UsersPage;
