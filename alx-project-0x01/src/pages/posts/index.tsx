@@ -10,6 +10,7 @@ interface PostsPageProps {
 
 const Posts: React.FC<PostsPageProps> = ({ posts }) => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [post, setPost] = useState<PostData | null>(null);
   const [allPosts, setAllPosts] = useState<PostProps[]>(posts);
 
   const handleAddPost = (newPost: PostData) => {
