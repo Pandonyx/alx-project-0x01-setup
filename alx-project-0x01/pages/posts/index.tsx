@@ -1,57 +1,39 @@
-import Head from 'next/head';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import PostCard from '@/components/common/PostCard';
+import PostCard from "@/components/common/PostCard";
+import Header from "@/components/layout/Header";
+import { PostProps } from "@/interfaces";
 
-const PostsPage: React.FC = () => {
-  const posts = [
-    {
-      id: 1,
-      title: 'First Post',
-      excerpt:
-        'Everything you need to know about setting up your first Next.js project.',
-    },
-    {
-      id: 2,
-      title: 'Second Post',
-      excerpt:
-        'A deep dive into Tailwind CSS best practices for large codebases.',
-    },
-    {
-      id: 3,
-      title: 'Third Post',
-      excerpt: 'Why ESLint saves you hours of debugging time.',
-    },
-  ];
-
+const Posts: React.FC<PostProps[]> = ({ posts }) => {
+  console.log(posts)
   return (
-    <>
-      <Head>
-        <title>Posts | ALX Project</title>
-      </Head>
+    <div className="flex flex-col h-screen">
+      <Header />
+      <main className="p-4">
+        <div className="flex justify-between">
+        <h1 className=" text-2xl font-semibold">Post Content</h1>
+        <button className="bg-blue-700 px-4 py-2 rounded-full text-white">Add Post</button>
+        </div>
+        <div className="grid grid-cols-3 gap-2 ">
+          {
+            posts?.map(({ title, body, userId, id }: PostProps, key: number) => (
+              <PostCard title={title} body={body} userId={userId} id={id} key={key} />
+            ))
+          }
+        </div>
+      </main>
+    </div>
+  )
+}
 
-      <div className="flex min-h-screen flex-col">
-        
 
-        <section className="mx-auto w-full max-w-6xl flex-1 px-4 pb-16 pt-10 sm:px-6 lg:px-8">
-          <h1 className="mb-8 text-4xl font-bold tracking-tight">Posts</h1>
+export async function getStaticProps() {
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts")
+  const posts = await response.json()
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map(({ id, title, excerpt }) => (
-              <PostCard
-                key={id}
-                title={title}
-                excerpt={excerpt}
-                onReadMore={() => alert(`Clicked post ${id}`)}
-              />
-            ))}
-          </div>
-        </section>
+  return {
+    props: {
+      posts
+    }
+  }
+}
 
-        
-      </div>
-    </>
-  );
-};
-
-export default PostsPage;
+export default Posts;
