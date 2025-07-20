@@ -1,7 +1,7 @@
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  /** visual style */
+
   variant?: 'primary' | 'secondary' | 'ghost';
-  /** full‑width on mobile? */
+
   full?: boolean;
 }
 

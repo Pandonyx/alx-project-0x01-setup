@@ -4,11 +4,11 @@ import Footer from '@/components/layout/Footer';
 import UserCard from '@/components/common/UserCard';
 import { UserProps } from '@/interfaces';
 
-interface UsersPageProps {
-  posts: UserProps[]; // ❶ keep the key name “posts” per instructions
+interface UsersProps {
+  posts: UserProps[]; // the API data arrives in `posts`
 }
 
-const UsersPage: React.FC<UsersPageProps> = ({ posts }) => (
+const Users: React.FC<UsersProps> = ({ posts }) => (
   <>
     <Head>
       <title>Users | ALX Project</title>
@@ -23,7 +23,7 @@ const UsersPage: React.FC<UsersPageProps> = ({ posts }) => (
         <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((user) => (
             <li key={user.id}>
-              <UserCard user={user} />
+              <UserCard {...user} />
             </li>
           ))}
         </ul>
@@ -34,17 +34,14 @@ const UsersPage: React.FC<UsersPageProps> = ({ posts }) => (
   </>
 );
 
+// 📝 required by the task ­– leave variable names as‑is
 export async function getStaticProps() {
   const response = await fetch('https://jsonplaceholder.typicode.com/users');
   const posts: UserProps[] = await response.json();
 
   return {
-    props: {
-      posts, // ❷ passed into UsersPage as “posts”
-    },
-    // (optional) revalidate every day if you like:
-    // revalidate: 86400,
+    props: { posts },
   };
 }
 
-export default UsersPage;
+export default Users;

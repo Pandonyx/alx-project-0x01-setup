@@ -6,11 +6,9 @@ import Footer from "@/components/layout/Footer";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      
       <main className="flex min-h-screen flex-col">
         <Component {...pageProps} />
       </main>
-      <Footer />
     </>
   );
   
